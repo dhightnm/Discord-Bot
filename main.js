@@ -13,8 +13,9 @@ client.commands = new Discord.Collection();
 const commandFolders = fs.readdirSync('./commands');
 
 for (const folder of commandFolders) {
-  const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
+  const commandFiles = fs.readdirSync(`./commands/${folder}`).filter((file) => file.endsWith('.js'));
   for (const file of commandFiles) {
+    console.log(commandFiles);
     const command = require(`./commands/${folder}/${file}`);
     client.commands.set(command.name, command);
   }
@@ -50,6 +51,12 @@ client.on('message', (msg) => {
   } catch (error) {
     console.error(error);
     msg.reply('there was an error trying to execute that command');
+  }
+});
+
+client.on('message', (message) => {
+  if (message.content === 'ping') {
+    message.reply('pong');
   }
 });
 
